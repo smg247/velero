@@ -42,6 +42,38 @@ const (
 	// VolumesToExcludeAnnotation is the annotation on a pod whose mounted volumes
 	// should be excluded from restic backup.
 	VolumesToExcludeAnnotation = "backup.velero.io/backup-volumes-excludes"
+
+	// VolumesToVerifyAnnotation is the annotation on a pod whose mounted volumes
+	// need to be verified after backing up with restic.
+	VolumesToVerifyAnnotation = "backup.velero.io/verify-volumes"
+
+	// PVRErrorsAnnotation is the annotation on a PVR indicating the number of
+	// errors on running restic restore.
+	PVRErrorsAnnotation = "velero.io/pvr-errors"
+
+	// PVRVerifyErrorsAnnotation is the annotation on a PVR indicating the number of
+	// verify errors on running restic restore.
+	PVRVerifyErrorsAnnotation = "velero.io/pvr-verify-errors"
+
+	// PVRPodNameAnnotation is the annotation on a PVR indicating the name of the
+	// restic pod that ran the restic restore (for looking up error messages)
+	PVRResticPodAnnotation = "velero.io/pvr-restic-pod"
+
+	// RestorePVRErrorsAnnotation is the annotation on a restore providing a list of
+	// PVRs with errors on running restic restore.
+	RestorePVRErrorsAnnotation = "velero.io/restore-pvr-errors"
+
+	// RestorePVRVerifyErrorsAnnotation is the annotation on a restore providing a list of
+	// PVRs with verify errors on running restic restore.
+	RestorePVRVerifyErrorsAnnotation = "velero.io/restore-pvr-verify-errors"
+
+	// RestorePVRErrorCountAnnotation is the annotation on a restore specifying how many
+	// PVRs had errors on running restic restore.
+	RestorePVRErrorCountAnnotation = "velero.io/restore-pvr-error-count"
+
+	// RestorePVRVerifyErrorCountAnnotation is the annotation on a restore specifying how many
+	// PVRs had verify errors on running restic restore.
+	RestorePVRVerifyErrorCountAnnotation = "velero.io/restore-pvr-verify-error-count"
 )
 
 // GetVolumeBackupsForPod returns a map, of volume name -> snapshot id,
@@ -148,6 +180,27 @@ func getVolumesToExclude(obj metav1.Object) []string {
 func contains(list []string, k string) bool {
 	for _, i := range list {
 		if i == k {
+			return true
+		}
+	}
+	return false
+}
+
+// GetVolumesToVerifyIncludes returns true if the passed-in
+// volume name is included in the VolumesToVerifyAnnotation
+func GetVolumesToVerifyIncludes(obj metav1.Object, volName string) bool {
+	annotations := obj.GetAnnotations()
+	if annotations == nil {
+		return false
+	}
+
+	volumesValue := annotations[VolumesToVerifyAnnotation]
+	if volumesValue == "" {
+		return false
+	}
+
+	for _, vol := range strings.Split(volumesValue, ",") {
+		if vol == volName {
 			return true
 		}
 	}
