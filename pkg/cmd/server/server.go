@@ -171,6 +171,7 @@ func NewCommand(f client.Factory) *cobra.Command {
 			logger.Infof("setting log-level to %s", strings.ToUpper(logLevel.String()))
 
 			logger.Infof("Starting Velero server %s (%s)", buildinfo.Version, buildinfo.FormattedGitSHA())
+			logger.Infof("Konveyor HotFix #1 - Bump restic repo timeout")
 			if len(features.All()) > 0 {
 				logger.Infof("%d feature flags enabled %s", len(features.All()), features.All())
 			} else {
@@ -278,12 +279,12 @@ func newServer(f client.Factory, config serverConfig, logger *logrus.Logger) (*s
 		discoveryClient:       veleroClient.Discovery(),
 		dynamicClient:         dynamicClient,
 		sharedInformerFactory: informers.NewSharedInformerFactoryWithOptions(veleroClient, 0, informers.WithNamespace(f.Namespace())),
-		ctx:                   ctx,
-		cancelFunc:            cancelFunc,
-		logger:                logger,
-		logLevel:              logger.Level,
-		pluginRegistry:        pluginRegistry,
-		config:                config,
+		ctx:            ctx,
+		cancelFunc:     cancelFunc,
+		logger:         logger,
+		logLevel:       logger.Level,
+		pluginRegistry: pluginRegistry,
+		config:         config,
 	}
 
 	return s, nil
