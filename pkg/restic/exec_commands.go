@@ -92,6 +92,7 @@ func RunBackup(backupCmd *Command, log logrus.FieldLogger, updateFunc func(veler
 
 	err := cmd.Start()
 	if err != nil {
+		log.WithError(err).Errorf("error starting command execution")
 		return stdoutBuf.String(), stderrBuf.String(), err
 	}
 
@@ -125,6 +126,7 @@ func RunBackup(backupCmd *Command, log logrus.FieldLogger, updateFunc func(veler
 
 	err = cmd.Wait()
 	if err != nil {
+		log.WithError(err).Errorf("error waiting for command execution")
 		return stdoutBuf.String(), stderrBuf.String(), err
 	}
 	quit <- struct{}{}
