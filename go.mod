@@ -23,6 +23,7 @@ require (
 	github.com/hashicorp/go-hclog v0.14.1
 	github.com/hashicorp/go-plugin v1.4.3
 	github.com/joho/godotenv v1.3.0
+	github.com/konveyor/volume-snapshot-mover v0.0.0-20220725191622-4b360b792c3e
 	github.com/kubernetes-csi/external-snapshotter/client/v4 v4.2.0
 	github.com/onsi/ginkgo v1.16.5
 	github.com/onsi/gomega v1.18.1
