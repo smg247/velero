@@ -9,6 +9,8 @@ import (
 
 	"github.com/apex/log"
 	snapmoverv1alpha1 "github.com/konveyor/volume-snapshot-mover/api/v1alpha1"
+	snapshotterClientSet "github.com/kubernetes-csi/external-snapshotter/client/v4/clientset/versioned"
+	snapshotv1listers "github.com/kubernetes-csi/external-snapshotter/client/v4/listers/volumesnapshot/v1"
 	"github.com/pkg/errors"
 	velerov1api "github.com/vmware-tanzu/velero/pkg/apis/velero/v1"
 	"golang.org/x/sync/errgroup"
@@ -126,6 +128,22 @@ func WaitForDataMoverBackupToComplete(backupName string) error {
 			log.Errorf("failed to wait for VolumeSnapshotBackups to be completed: %s", err.Error())
 			return err
 		}
+	}
+	return nil
+}
+
+func DeleteTempVSClass(backupName string, tempVS snapshotv1listers.VolumeSnapshotClassLister, client *snapshotterClientSet.Clientset) error {
+
+	tempVSClass, err := tempVS.Get(fmt.Sprintf("%s-snapclass", backupName))
+	if err != nil {
+		log.Errorf("failed to get temp vsClass %v", tempVSClass.Name)
+		return err
+	}
+
+	err = client.SnapshotV1().VolumeSnapshotClasses().Delete(context.TODO(), tempVSClass.Name, metav1.DeleteOptions{})
+	if err != nil {
+		log.Errorf("failed to delete temp vsClass %v", tempVSClass.Name)
+		return err
 	}
 	return nil
 }
