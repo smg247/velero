@@ -133,7 +133,7 @@ func WaitForDataMoverBackupToComplete(backupName string) error {
 	return nil
 }
 
-func DeleteTempVSClass(backupName string, tempVS snapshotv1listers.VolumeSnapshotClassLister, client *snapshotterClientSet.Clientset) error {
+func DeleteTempVSClass(backupName string, tempVS snapshotv1listers.VolumeSnapshotClassLister, client snapshotterClientSet.Interface) error {
 
 	tempVSClassName := fmt.Sprintf("%s-snapclass", backupName)
 	tempVSClass, err := tempVS.Get(tempVSClassName)
