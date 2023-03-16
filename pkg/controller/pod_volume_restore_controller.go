@@ -22,9 +22,9 @@ import (
 	"io/ioutil"
 	"os"
 	"path/filepath"
-	"time"
 	"strconv"
 	"strings"
+	"time"
 
 	"github.com/pkg/errors"
 	"github.com/sirupsen/logrus"
