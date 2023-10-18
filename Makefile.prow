@@ -1,5 +1,5 @@
 # warning: verify this inside a container with following:
-# docker run -it --rm -v `pwd`:`pwd` -w `pwd` golang:1.18 bash -c "make -f Makefile.prow ci"
+# docker run -it --rm -v `pwd`:`pwd` -w `pwd` golang:1.19 bash -c "make -f Makefile.prow ci"
 # 
 # otherwise unintended system changes may include, replacing your currently installed kubectl, binaries in GOBIN, files in GOPATH/src
 # 
@@ -22,7 +22,7 @@ ci:
 	make -f $(MAKEFILE) verify all test
 
 .PHONY: verify
-verify: goimports code-generator controller-gen kubectl
+verify: goimports controller-gen kubectl
 # add PROWBIN to PATH
 	@echo Verifying with PATH=$(PROWBIN):$(PATH)
 # Per
@@ -68,13 +68,6 @@ $(GOBIN)/goimports:
 	@echo Installing goimports
 	go install golang.org/x/tools/cmd/goimports@latest
 	@echo Installed goimports
-
-.PHONY: code-generator
-code-generator: $(GOSRC)/k8s.io/code-generator
-
-$(GOSRC)/k8s.io/code-generator:
-	mkdir -p $(GOSRC)/k8s.io/
-	cd $(GOSRC)/k8s.io/ && git clone -b v$(CODEGEN_VERSION) https://github.com/kubernetes/code-generator
 
 .PHONY: controller-gen
 controller-gen: $(GOBIN)/controller-gen
