@@ -263,6 +263,7 @@ func (b *backupReconciler) Reconcile(ctx context.Context, req ctrl.Request) (ctr
 		request.Status.Phase = velerov1api.BackupPhaseInProgress
 		request.Status.StartTimestamp = &metav1.Time{Time: b.clock.Now()}
 	}
+
 	// update status
 	if err := kubeutil.PatchResource(original, request.Backup, b.kbClient); err != nil {
 		return ctrl.Result{}, errors.Wrapf(err, "error updating Backup status to %s", request.Status.Phase)
