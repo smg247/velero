@@ -3,22 +3,22 @@
 
 # List of usernames who may use /lgtm
 reviewers:
-- @Lyndon-Li
-- @anshulahuja98
-- @blackpiglet
-- @qiuming-best
-- @reasonerjt
-- @shubham-pampattiwar
-- @sseago
-- @ywk253100
+- Lyndon-Li
+- anshulahuja98
+- blackpiglet
+- qiuming-best
+- reasonerjt
+- shubham-pampattiwar
+- sseago
+- ywk253100
 
 # List of usernames who may use /approve
 approvers:
-- @Lyndon-Li
-- @anshulahuja98
-- @blackpiglet
-- @qiuming-best
-- @reasonerjt
-- @shubham-pampattiwar
-- @sseago
-- @ywk253100
+- Lyndon-Li
+- anshulahuja98
+- blackpiglet
+- qiuming-best
+- reasonerjt
+- shubham-pampattiwar
+- sseago
+- ywk253100
